@@ -1,0 +1,122 @@
+.root {
+    -fx-font-family: "Segoe UI", -apple-system, sans-serif;
+    -fx-base: #f8fafc;
+    -fx-background-color: #f8fafc;
+}
+
+.header-container {
+    -fx-background-color: #ffffff;
+    -fx-padding: 16px 20px;
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.app-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0f172a;
+}
+
+.form-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #475569;
+    -fx-font-weight: 600;
+}
+
+.text-field, .combo-box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cbd5e1;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-padding: 4px 8px;
+    -fx-font-size: 13px;
+}
+
+.text-field:focused, .combo-box:focused {
+    -fx-border-color: #2563eb;
+    -fx-effect: dropshadow(three-pass-box, rgba(37, 99, 235, 0.2), 4, 0, 0, 0);
+}
+
+.btn-primary {
+    -fx-background-color: #1e40af;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-background-radius: 4px;
+    -fx-padding: 6px 14px;
+    -fx-cursor: hand;
+}
+
+.btn-primary:hover {
+    -fx-background-color: #1d4ed8;
+}
+
+.btn-primary:pressed {
+    -fx-background-color: #1e3a8a;
+}
+
+.data-table {
+    -fx-background-color: #ffffff;
+    -fx-border-color: transparent;
+}
+
+.data-table .column-header-background {
+    -fx-background-color: #f1f5f9;
+}
+
+.data-table .column-header {
+    -fx-background-color: transparent;
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 0 1px 1px 0;
+    -fx-padding: 8px 10px;
+}
+
+.data-table .column-header .label {
+    -fx-text-fill: #334155;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.data-table .table-row-cell:odd {
+    -fx-background-color: #f8fafc;
+}
+
+.data-table .table-row-cell:even {
+    -fx-background-color: #ffffff;
+}
+
+.data-table .table-row-cell:selected {
+    -fx-background-color: #dbeafe;
+}
+
+.data-table .table-row-cell:selected .text {
+    -fx-fill: #1e3a8a;
+}
+
+.footer-bar {
+    -fx-background-color: #ffffff;
+    -fx-padding: 12px 20px;
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 1px 0 0 0;
+}
+
+.status-text {
+    -fx-text-fill: #64748b;
+    -fx-font-size: 12px;
+}
+
+.gpa-badge {
+    -fx-background-color: #dcfce7;
+    -fx-text-fill: #166534;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-padding: 4px 12px;
+    -fx-background-radius: 6px;
+    -fx-border-color: #bbf7d0;
+    -fx-border-radius: 6px;
+}
+
+.empty-label {
+    -fx-text-fill: #94a3b8;
+    -fx-font-style: italic;
+}

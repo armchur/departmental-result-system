@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" 
+            xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="app.ui.ResultViewController"
+            stylesheets="@../css/style.css"
+            prefWidth="860" prefHeight="540">
+
+    <!-- Top Action & Form Bar -->
+    <top>
+        <VBox styleClass="header-container" spacing="12">
+            <Label text="Departmental Result Management" styleClass="app-title" />
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Student:" styleClass="form-label" />
+                <ComboBox fx:id="studentBox" prefWidth="240" promptText="Select Student" />
+
+                <Label text="Session:" styleClass="form-label" />
+                <TextField fx:id="sessionField" text="2025/2026" prefWidth="110" />
+
+                <Region HBox.hgrow="ALWAYS" />
+            </HBox>
+
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Course:" styleClass="form-label" />
+                <ComboBox fx:id="courseBox" prefWidth="240" promptText="Select Course" />
+
+                <Label text="Score:" styleClass="form-label" />
+                <TextField fx:id="scoreField" promptText="0 - 100" prefWidth="90" />
+
+                <Button fx:id="recordButton" text="Record Score" onAction="#handleRecordScore" styleClass="btn-primary" />
+            </HBox>
+        </VBox>
+    </top>
+
+    <!-- Center Data Table -->
+    <center>
+        <TableView fx:id="resultsTable" styleClass="data-table">
+            <columns>
+                <TableColumn fx:id="codeCol" text="Course Code" prefWidth="120" />
+                <TableColumn fx:id="titleCol" text="Course Title" prefWidth="260" />
+                <TableColumn fx:id="unitCol" text="Units" prefWidth="80" />
+                <TableColumn fx:id="scoreCol" text="Score" prefWidth="80" />
+                <TableColumn fx:id="gradeCol" text="Grade" prefWidth="80" />
+                <TableColumn fx:id="pointCol" text="Grade Point" prefWidth="90" />
+                <TableColumn fx:id="weightedCol" text="Weighted" prefWidth="90" />
+            </columns>
+            <placeholder>
+                <Label text="No results recorded for this student in the selected session." styleClass="empty-label" />
+            </placeholder>
+        </TableView>
+    </center>
+
+    <!-- Bottom GPA & Status Bar -->
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" spacing="15" styleClass="footer-bar">
+            <Label fx:id="statusLabel" text="Ready" styleClass="status-text" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+            <Label fx:id="gpaLabel" text="Calculated GPA: 0.00" styleClass="gpa-badge" />
+        </HBox>
+    </bottom>
+
+</BorderPane>
