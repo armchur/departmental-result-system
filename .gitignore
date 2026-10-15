@@ -1,0 +1,18 @@
+target/
+*.class
+*.log
+
+# Exclude local runtime database and backups
+db/*.db
+db/*.db-journal
+
+# Local IDE configuration
+.vscode/
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+
+# Configuration with credentials
+config.properties
