@@ -15,8 +15,8 @@ public class SqliteResultDao implements ResultDao {
         List<Student> list = new ArrayList<>();
         String sql = "SELECT id, matric_no, full_name, department, level FROM students ORDER BY matric_no ASC";
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 list.add(new Student(
                     rs.getInt("id"),
@@ -35,8 +35,8 @@ public class SqliteResultDao implements ResultDao {
         List<Course> list = new ArrayList<>();
         String sql = "SELECT id, code, title, credit_unit, semester FROM courses ORDER BY code ASC";
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 list.add(new Course(
                     rs.getInt("id"),
@@ -61,7 +61,7 @@ public class SqliteResultDao implements ResultDao {
             ORDER BY c.code ASC
         """;
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, studentId);
             stmt.setString(2, session);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -91,7 +91,7 @@ public class SqliteResultDao implements ResultDao {
                 grade_point = excluded.grade_point
         """;
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, studentId);
             stmt.setInt(2, courseId);
             stmt.setString(3, session);
@@ -101,4 +101,61 @@ public class SqliteResultDao implements ResultDao {
             stmt.executeUpdate();
         }
     }
+        @Override
+    public void saveResultsBatch(int studentId, String session, List<BulkGradeItem> items) throws SQLException {
+        if (items == null || items.isEmpty()) {
+            return;
+        }
+
+        String sql = """
+            INSERT INTO results (student_id, course_id, session, score, grade, grade_point)
+            VALUES (?, ?, ?, ?, ?, ?)
+            ON CONFLICT(student_id, course_id, session) DO UPDATE SET
+                score = excluded.score,
+                grade = excluded.grade,
+                grade_point = excluded.grade_point
+        """;
+
+        Connection conn = null;
+        try {
+            conn = DatabaseConnection.getConnection();
+            // 1. Begin Transaction
+            conn.setAutoCommit(false);
+
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                for (BulkGradeItem item : items) {
+                    stmt.setInt(1, studentId);
+                    stmt.setInt(2, item.courseId());
+                    stmt.setString(3, session);
+                    stmt.setDouble(4, item.score());
+                    stmt.setString(5, item.grade());
+                    stmt.setInt(6, item.gradePoint());
+                    stmt.executeUpdate();
+                }
+            }
+
+            // 2. Commit if all statements succeeded
+            conn.commit();
+        } catch (SQLException e) {
+            // 3. Rollback atomically on ANY error
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException rollbackEx) {
+                    e.addSuppressed(rollbackEx);
+                }
+            }
+            throw e;
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.setAutoCommit(true);
+                    conn.close();
+                } catch (SQLException closeEx) {
+                    // ignore on close
+                }
+            }
+        }
+    }
+
 }

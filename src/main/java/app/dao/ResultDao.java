@@ -12,4 +12,8 @@ public interface ResultDao {
     List<Course> findAllCourses() throws SQLException;
     List<ResultEntry> findResultsByStudentAndSession(int studentId, String session) throws SQLException;
     void saveResult(int studentId, int courseId, String session, double score, String grade, int gradePoint) throws SQLException;
+
+    // Transactional multi-write operation
+    record BulkGradeItem(int courseId, double score, String grade, int gradePoint) {}
+    void saveResultsBatch(int studentId, String session, List<BulkGradeItem> items) throws SQLException;
 }

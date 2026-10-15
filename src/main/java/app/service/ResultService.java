@@ -65,4 +65,20 @@ public class ResultService {
         GradeInfo gradeInfo = computeGrade(score);
         resultDao.saveResult(studentId, courseId, session, score, gradeInfo.grade(), gradeInfo.gradePoint());
     }
+        public record ScoreSubmission(int courseId, double score) {}
+
+    public void recordSemesterResultsBatch(int studentId, String session, List<ScoreSubmission> submissions) throws SQLException {
+        if (submissions == null || submissions.isEmpty()) {
+            throw new IllegalArgumentException("Submissions list cannot be empty.");
+        }
+
+        List<ResultDao.BulkGradeItem> bulkItems = new java.util.ArrayList<>();
+        for (ScoreSubmission sub : submissions) {
+            GradeInfo info = computeGrade(sub.score());
+            bulkItems.add(new ResultDao.BulkGradeItem(sub.courseId(), sub.score(), info.grade(), info.gradePoint()));
+        }
+
+        resultDao.saveResultsBatch(studentId, session, bulkItems);
+    }
+
 }
